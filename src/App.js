@@ -53,7 +53,7 @@ const logout = async() => {
           </div>
           <div className='flex flex-row place-content-center mt-8 bg-white py-2 px-2 w-80 rounded-full text-gray-600 font-semibold shadow-lg hover:bg-pink-300 hover:text-white'>
           <img className='w-7 h-7' src="https://img.icons8.com/color/50/000000/google-logo.png"/>
-                      <span className='px-2 py-0'>SignIn with Google</span>
+                      <span className='px-2 py-0'>Sign In with Google</span>
           </div>
         </div>
         <div>
@@ -73,7 +73,7 @@ const logout = async() => {
 
      {/* Firebase Auth using email and password*/}
 
-     {/* <div>
+     <div>
      <h3> 
        Register User
      </h3> 
@@ -111,7 +111,7 @@ const logout = async() => {
      <button onClick={logout}>Signout</button>
      <div>
        <button onClick={signInWithGoogle} className="bg-blue-700 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">SignIn With Google</button>
-     </div> */}
+     </div>
     </div>
   );
 }
