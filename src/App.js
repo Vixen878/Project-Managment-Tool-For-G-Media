@@ -1,47 +1,129 @@
 import './App.css';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/authnpm ins';
+import { useState } from "react";
+import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import {auth} from "./firebase/config";
+import { signInWithGoogle } from './firebase/config';
+import { LogoGoogle } from 'react-ionicons'
 
-firebase.initializeApp({
-  apiKey: "AIzaSyAJH8ZLFC9aYdUDbqjnE7J67MICkKW5CcY",
-  authDomain: "elik-project-managment-tool.firebaseapp.com",
-  projectId: "elik-project-managment-tool",
-  storageBucket: "elik-project-managment-tool.appspot.com",
-  messagingSenderId: "599744157195",
-  appId: "1:599744157195:web:815a6c60466f8f647b590e",
-  measurementId: "G-GSBHHRC959"
-})
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-
-const [user] = useAuthState(auth);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        
-      </header>
 
-     <section>
-       {user ? <chatroom /> : <SignIn />}
-     </section>
+ const [registerEmail, setRegisterEmail] = useState("");
+ const [registerPassword, setRegisterPassword] = useState("");
+ const [loginEmail, setLoginEmail] = useState("");
+ const [loginPassword, setLoginPassword] = useState("");
+
+ const [user, setUser] = useState({});
+ onAuthStateChanged(auth, (currentUser)=> {
+   setUser(currentUser);
+ })
+
+ const register = async () => {
+   try {
+  const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+  console.log(user)
+} catch (error) {
+  console.log(error.message)
+} 
+}
+
+ const Login = async() => {
+  try {
+    const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+    console.log(user)
+  } catch (error) {
+    console.log(error.message)
+  } 
+}
+
+const logout = async() => {
+   await signOut(auth);
+}
+
+  return (
+    <div className='antialiased'>
+      <div className="flex w-full min-h-screen justify-between">
+        <div className='py-16 px-28'>
+          <div className='space-y-7'>
+          <img src="/Header_Logo.png" alt="" />
+          <h1 className="text-4xl font-semibold text-gray-500 w-4/5">
+            Welcome back, please login to your account
+          </h1>
+          </div>
+          <div className='flex flex-row place-content-center mt-8 bg-white py-2 px-2 w-80 rounded-full text-gray-600 font-semibold shadow-lg hover:bg-pink-300 hover:text-white'>
+          <img className='w-7 h-7' src="https://img.icons8.com/color/50/000000/google-logo.png"/>
+                      <span className='px-2 py-0'>SignIn with Google</span>
+          </div>
+        </div>
+        <div>
+          Gradient Circles Side
+        </div>
+      </div>
+      {/* <div class="flex flex-row justify-between">
+        <div class="basis-1/2 bg-red-100 w-full h-full">
+          Components Side
+        </div>
+        <div class="relative bg-gray-500 w-full max-w-lg">
+          <div class="absolute top-0 -left-11 bg-red-400 w-96 h-96 rounded-full"></div>
+          <div class="absolute bg-red-200 w-96 h-96 rounded-full"></div>
+        </div>
+      </div> */}
+
+
+     {/* Firebase Auth using email and password*/}
+
+     {/* <div>
+     <h3> 
+       Register User
+     </h3> 
+     <input placeholder="email" 
+     onChange={(event) => {
+       setRegisterEmail(event.target.value);
+       }}
+       />
+     <input placeholder="password" 
+      onChange={(event) => {
+        setRegisterPassword(event.target.value);
+        }}/>
+     <button onClick={register}> Register </button>
+     </div>
+     <div>
+       <h3>
+         Login
+       </h3>
+       <input type="text" placeholder='email' 
+        onChange={(event) => {
+          setLoginEmail(event.target.value);
+          }}/>
+       <input type="text" placeholder='password' 
+        onChange={(event) => {
+          setLoginPassword(event.target.value);
+          }}/>
+       <button onClick={Login}>Login</button>
+     </div>
+     <img src={localStorage.getItem("profilePic")} alt="" />
+     <h4>
+       Logged In User:
+     </h4>
+     {user?.email}
+     
+     <button onClick={logout}>Signout</button>
+     <div>
+       <button onClick={signInWithGoogle} className="bg-blue-700 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">SignIn With Google</button>
+     </div> */}
     </div>
   );
 }
 
-function SignIn() {
-  const signInWithGoogle = () => {
-
-  }
-  return(
-    <button onClick = {signInWithGoogle}> Sign in with google</button>
-  )
-}
+// function SignIn() {
+//   const signInWithGoogle = () => {
+//     const provider = new firebase.auth.signInWithGoogle()
+//     auth.signinWithPopup(provider)
+//   }
+//   return(
+//     <button onClick = {signInWithGoogle}> Sign in with google</button>
+//   )
+// }
 
 export default App;
