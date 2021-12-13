@@ -1,4 +1,6 @@
 module.exports = {
+  mode: 'jit',
+  purge: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx,vue}"],
   content: [
     "./src/**/*.{js,jsx}",
   ],
@@ -10,7 +12,8 @@ module.exports = {
         texts: '#241C23',
         gred: '#E53945',
         gorange: '#F45C2C',
-        circlesBG: '#fad1c7'
+        circlesBG: '#fad1c7',
+        dashboardBG: '#F8F8F8'
       }
     },
   },

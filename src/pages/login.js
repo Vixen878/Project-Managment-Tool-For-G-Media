@@ -4,8 +4,8 @@ import { signInWithGoogle } from '../firebase/config';
 
 function LoginPage() {
     return (
-        <div className='min-h-full justify-between'>
-            <div className='flex flex-col p-8 md:p-0 md:grid md:grid-cols-2 md:flex-row  bg-white'>
+        <div className='h-screen justify-between'>
+            <div className='flex flex-col p-8 md:p-0 md:grid md:grid-cols-2 md:flex-row bg-white'>
                 <div className='flex flex-col md:px-28 md:py-20'>
                     <div>
                         <img src="Header_Logo.png" alt="" />
@@ -23,7 +23,7 @@ function LoginPage() {
                         </div>
                         <div className='mt-4 md:mt-6'>
                             <div className='md:ml-9'>
-                                <div className='flex place-content-center md:mt-8 bg-white hover:bg-gred py-2 px-2 md:w-80 rounded-lg text-gray-600 font-semibold shadow-lg hover:text-white cursor-pointer'>
+                                <div onClick={signInWithGoogle} className='flex place-content-center md:mt-8 bg-white hover:bg-gred py-2 px-2 md:w-80 rounded-lg text-gray-600 font-semibold shadow-lg hover:text-white cursor-pointer'>
                                     <img className='w-7 h-7' src="https://img.icons8.com/color/50/000000/google-logo.png" />
                                     <span className='px-2 py-0'>Sign In with Google</span>
                                 </div>
@@ -37,14 +37,14 @@ function LoginPage() {
                             -OR-
                         </span>
                     </div>
-                    <div className='mt-4 md:w-full rounded-lg shadow-lg md:shadow-none md:rounded-none'>
+                    <div className='mt-4 md:w-full md:p-8 md:mt-7 rounded-lg shadow-lg md:shadow-none md:rounded-none'>
                         <Loginform />
                     </div>
                     <div>
-
+                        {/* forgot password section  */}
                     </div>
                 </div>
-                <div className='relative invisible md:visible bg-circlesBG overflow-hidden max-h-full'>
+                <div className='relative invisible md:visible bg-circlesBG overflow-hidden '>
                     <div className='absolute z-40 right-[25rem] -top-[4rem] w-[50rem] h-[50rem] bg-gradient-to-bl from-primaryGreen via-secondaryGreen to-gorange rounded-full'>
                     </div>
                     <div className='relative z-20'>
