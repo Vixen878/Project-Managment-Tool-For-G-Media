@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider} from 'firebase/auth';
+import { getFirestore } from '@firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAJH8ZLFC9aYdUDbqjnE7J67MICkKW5CcY",
@@ -10,27 +11,14 @@ const firebaseConfig = {
   appId: "1:599744157195:web:815a6c60466f8f647b590e",
   measurementId: "${config.measurementId}"
 };
-  
-  const app = initializeApp(firebaseConfig);
-  
-  export const auth = getAuth(app);
 
-  const provider = new GoogleAuthProvider()
+const app = initializeApp(firebaseConfig);
 
-//signin with google
-  export const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-    .then((result) => {
-       const name = result.user.displayName;
-       const email = result.user.email;
-       const profilePic = result.user.photoURL;
-       localStorage.setItem("name", name);
-       localStorage.setItem("email", email);
-       localStorage.setItem("profilePic", profilePic);
-       
-         
-    })
-    .catch((error)=>{
-      console.log(error);
-    });
-  }
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+
+export const fbAuth =  new FacebookAuthProvider();
+export const googleProvider = new GoogleAuthProvider()
+
+
+
