@@ -1,7 +1,6 @@
-import { UseCollection } from "../hooks/useCollection"
 import { Link } from "react-router-dom"
 
-export default function ProjectsList({ projects, props }) {
+export default function ProjectsList({ projects }) {
 
     return (
         <div className="mt-16 flex gap-10">

@@ -9,7 +9,7 @@ function CreateProjectModal(props) {
     const history = useHistory()
 
     const { user } = UseAuthContext()
-    const { addDocument, response } = UseFirestore('projects')
+    const { addDocument, response } = UseFirestore('pending-projects')
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")

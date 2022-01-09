@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 
-import { collection, onSnapshot, getDocs, doc } from 'firebase/firestore'
+import { collection, onSnapshot, doc } from 'firebase/firestore'
 
 export const UseDocument = (col, id) => {
     const [document, setDocument] = useState(null)
@@ -9,16 +9,8 @@ export const UseDocument = (col, id) => {
 
     // realtime data for document
     useEffect(() => {
-        // const ref = db.collection(collection).document(id)
-        const ref = doc(collection(db, col), id)
 
-        // const unsub = ref.onSnapshot((snapshot) => {
-        //     setDocument({ ...snapshot.data(), id: snapshot.id })
-        //     setError(null)
-        // }, (err) => {
-        //     console.log(err.message)
-        //     setError('Failed to get documents')
-        // })
+        const ref = doc(collection(db, col), id)
 
         const unsubscribe = onSnapshot(ref, (snapshot) => {
             if (snapshot.data()) {

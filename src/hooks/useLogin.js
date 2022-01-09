@@ -3,7 +3,7 @@ import { auth, fbAuth, googleProvider, db } from '../firebase/config'
 import { useState, useEffect } from 'react'
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { UseAuthContext } from './useAuthContext'
-import { getDoc, setDoc, doc } from '@firebase/firestore';
+import { getDoc, setDoc, doc, updateDoc } from '@firebase/firestore';
 
 export const UseLogin = () => {
     const [isCancelled, setIsCancelled] = useState(false)
@@ -18,7 +18,11 @@ export const UseLogin = () => {
         // sign in the user with email and password
         try {
             const res = await signInWithEmailAndPassword(auth, email, password)
-            
+
+            // update online status
+            await updateDoc(doc(db, "clients", res.user.uid), {
+                online: true,
+            })
 
             // dispatch a login action
             dispatch({ type: 'LOGIN', payload: res.user })
@@ -45,7 +49,6 @@ export const UseLogin = () => {
 
         try {
             const response = await signInWithPopup(auth, googleProvider)
-
             const displayName = await response.user.displayName;
 
             // create user document
@@ -56,7 +59,12 @@ export const UseLogin = () => {
                     online: true,
                     displayName
                 })
+            } else {
+                await updateDoc(doc(db, "clients", response.user.uid), {
+                    online: true,
+                })
             }
+
 
             // dispatch google login action
             dispatch({ type: 'GOOGLE_LOGIN', payload: response.user })

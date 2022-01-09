@@ -11,7 +11,7 @@ function classNames(...classes) {
 
 export default function Tabs() {
 
-    const { documents, error } = UseCollection('projects')
+    const { documents, error } = UseCollection('pending-projects')
 
     let [isOpen, setIsOpen] = useState(false)
 
