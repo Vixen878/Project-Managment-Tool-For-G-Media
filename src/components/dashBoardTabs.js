@@ -4,6 +4,9 @@ import CreateProjectModal from './CreateProjectModal'
 import { UseCollection } from '../hooks/useCollection'
 import ProjectsList from './ProjectsList'
 import { motion } from 'framer-motion'
+import { OnGoingProjectsCounter } from './OnGoingProjectsCounter'
+import { OverallProjectCounter } from './OverallProjectCounter'
+import { UseAuthContext } from '../hooks/useAuthContext'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -11,7 +14,13 @@ function classNames(...classes) {
 
 export default function Tabs() {
 
-    const { documents, error } = UseCollection('pending-projects')
+    const { user } = UseAuthContext()
+
+    const { documents, error } = UseCollection(
+        'requests',
+        ["uid", "==", user.uid]
+    )
+
 
     let [isOpen, setIsOpen] = useState(false)
 
@@ -23,9 +32,8 @@ export default function Tabs() {
         setIsOpen(true)
     }
 
-
     return (
-        <div className="w-full px-2 sm:px-0">
+        <div className="w-full h-[720px]">
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
                     as="div"
@@ -64,23 +72,14 @@ export default function Tabs() {
                             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-xl font-bold leading-6 text-primaryGreen"
                                 >
-                                    Create a New Project
+                                    Request For A New Project
                                 </Dialog.Title>
 
+                                {/* Modal Content */}
                                 <CreateProjectModal cModal={closeModal} />
 
-                                <div className=" flex space-x-3 mt-4">
-
-                                    <button
-                                        type="button"
-                                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-gred rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                                        onClick={closeModal}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
                             </div>
                         </Transition.Child>
                     </div>
@@ -96,16 +95,16 @@ export default function Tabs() {
 
                                 selected
                                     ? 'border-2 border-primaryGreen bg-green-700 shadow-slate-500'
-                                    : 'text-red-300 hover:bg-white/[0.12] hover:text-primaryGreen'
+                                    : 'text-green-300 hover:bg-white/[0.12] hover:text-green-300'
                             )
                         }
                     >
                         <div className='flex flex-col justify-center items-center'>
                             <div className='text-4xl'>
-                                05
+                                {documents && <span>{documents.length}</span>}
                             </div>
                             <div className='text-base font-semibold'>
-                                In progress
+                                Pending Requests
                             </div>
                         </div>
                     </Tab>
@@ -116,38 +115,18 @@ export default function Tabs() {
                                 'w-full h-24 py-2.5 text-sm leading-5 font-medium text-primaryGreen rounded-lg',
 
                                 selected
-                                    ? 'border-b-primaryGreen bg-white shadow-slate-500'
-                                    : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                                    ? 'border-2 border-primaryGreen bg-green-700 shadow-slate-500'
+                                    : 'text-green-300 hover:bg-white/[0.12] hover:text-green-300'
                             )
                         }
                     >
                         <div className='flex flex-col justify-center items-center'>
-                            <div>
-                                ##
+                            <div className='text-4xl'>
+                                {/* Get on going component counter here */}
+                                {OnGoingProjectsCounter()}
                             </div>
-                            <div>
-                                Upcoming
-                            </div>
-                        </div>
-                    </Tab>
-                    <Tab
-                        key="Meow 2"
-                        className={({ selected }) =>
-                            classNames(
-                                'w-full h-24 py-2.5 text-sm leading-5 font-medium text-primaryGreen rounded-lg',
-
-                                selected
-                                    ? 'border-b-primaryGreen bg-white shadow-slate-500'
-                                    : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
-                            )
-                        }
-                    >
-                        <div className='flex flex-col justify-center items-center'>
-                            <div>
-                                ##
-                            </div>
-                            <div>
-                                Completed
+                            <div className='text-base font-semibold'>
+                                On Going
                             </div>
                         </div>
                     </Tab>
@@ -158,40 +137,63 @@ export default function Tabs() {
                                 'w-full h-24 py-2.5 text-sm leading-5 font-medium text-primaryGreen rounded-lg',
 
                                 selected
-                                    ? 'border-b-primaryGreen bg-white shadow-slate-500'
-                                    : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                                    ? 'border-2 border-primaryGreen bg-green-700 shadow-slate-500'
+                                    : 'text-green-300 hover:bg-white/[0.12] hover:text-green-300'
                             )
                         }
                     >
                         <div className='flex flex-col justify-center items-center'>
-                            <div>
-                                ##
+                            <div className='text-4xl'>
+                                {/* Get completed component counter here */}
+                                0
                             </div>
-                            <div>
-                                Total
+                            <div className='text-base font-semibold'>
+                                Completed
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab
+                        key="Meow 4"
+                        className={({ selected }) =>
+                            classNames(
+                                'w-full h-24 py-2.5 text-sm leading-5 font-medium text-primaryGreen rounded-lg',
+
+                                selected
+                                    ? 'border-2 border-primaryGreen bg-green-700 shadow-slate-500'
+                                    : 'text-green-300 hover:bg-white/[0.12] hover:text-green-300'
+                            )
+                        }
+                    >
+                        <div className='flex flex-col justify-center items-center'>
+                            <div className='text-4xl'>
+                                {/* Get completed component counter here */}
+                                {OverallProjectCounter()}
+                            </div>
+                            <div className='text-base font-semibold'>
+                                Over All
                             </div>
                         </div>
                     </Tab>
                 </Tab.List>
-                <Tab.Panels className="mt-2 flex flex-col justify-evenly">
+                <Tab.Panels className="mt-2 flex flex-col h-[610px] overflow-auto">
                     <Tab.Panel>
-                        <div>
+                        <div className='flex justify-center w-full'>
                             <motion.div
-                                whileHover={{ scale: 1.02, originX: 0 }}
-                                onClick={openModal} className='mt-7 h-10 hover:cursor-pointer text-white bg-primaryGreen shadow-2xl flex justify-center rounded-3xl items-center space-x-2'>
+                                whileHover={{ scale: 1.008, originX: 0 }}
+                                onClick={openModal}
+                                className='mt-7 px-64 h-10 hover:cursor-pointer text-white bg-primaryGreen shadow-xl flex justify-center rounded-3xl items-center space-x-2'>
                                 <div className='w-6 h-6'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><title>Add</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 112v288M400 256H112" /></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" viewBox="0 0 512 512"><title>Add</title><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M256 112v288M400 256H112" /></svg>
                                 </div>
                                 <span>
                                     Request a New Project
                                 </span>
                             </motion.div>
-                            <div className='flex '>
-                                {documents && <ProjectsList projects={documents} />}
-                            </div>
+                        </div>
+                        {documents && <ProjectsList projects={documents} />}
 
 
-                            {/* <div className='bg-[#70ffcf] flex flex-col justify-evenly items-center w-72 h-72 rounded-3xl shadow-lg'>
+                        {/* <div className='bg-[#70ffcf] flex flex-col justify-evenly items-center w-72 h-72 rounded-3xl shadow-lg'>
                                 <div className='flex flex-col items-center'>
                                     <div className='text-lg font-bold'>
                                         Motion Graphics
@@ -214,7 +216,6 @@ export default function Tabs() {
                             </div>
                             
                             </div> */}
-                        </div>
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>

@@ -7,13 +7,13 @@ function Dashboard() {
         <motion.div
             initial={{ x: '-100vh' }}
             animate={{ x: 0 }}
-            transition={{type: 'spring', stiffness: 60}}
-            className='w-screen h-screen flex flex-col pl-9 antialiased overflow-auto'>
+            transition={{ type: 'spring', stiffness: 60 }}
+            className='w-full flex flex-col pl-9 antialiased overflow-hidden'>
             {/* Search */}
             <div className='flex space-x-11 w-[1500PX] text-texts mt-14'>
                 <div className='flex flex-row space-x-4 items-center'>
                     <div className='text-primaryGreen w-8 h-8'>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><title>Grid</title><rect x="48" y="48" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /><rect x="288" y="48" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /><rect x="48" y="288" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /><rect x="288" y="288" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" viewBox="0 0 512 512"><title>Grid</title><rect x="48" y="48" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" /><rect x="288" y="48" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" /><rect x="48" y="288" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" /><rect x="288" y="288" width="176" height="176" rx="20" ry="20" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" /></svg>
                     </div>
                     <span className='text-4xl font-bold'>
                         Dashboard
@@ -32,11 +32,11 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-row mt-10'>
-                <div className='border shadow-xl bg-opacity-10 h-screen w-[1000px] p-9 rounded-tl-3xl'>
+            <div className='flex w-full h-[790px] flex-row mt-10'>
+                <div className='border shadow-xl bg-opacity-10 w-2/3 py-9 px-7 rounded-tl-3xl'>
                     <Tabs />
                 </div>
-                <div className='flex items-center justify-center p-11 w-[500px] text-4xl'>Chat Side</div>
+                <div className='flex items-center justify-center p-11 w-1/3 text-4xl'>Chat Side</div>
             </div>
         </motion.div>
 

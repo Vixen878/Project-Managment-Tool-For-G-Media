@@ -9,8 +9,8 @@ import { UseAuthContext } from './hooks/useAuthContext'
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import ResetPassword from './pages/resetPassword';
 import NavBar from './components/NavBar';
-import Projects from './pages/Projects';
 import { useEffect } from 'react';
+import Requests from './pages/Requests';
 
 function App() {
 
@@ -28,7 +28,7 @@ function App() {
               {!user && <Redirect to="/login" />}
               {user && <Dashboard />}
             </Route>
-            <Route path="/login">
+            <Route path="/login" >
               {user && <Redirect to="/" />}
               {!user && <LoginPage />}
             </Route>
@@ -36,9 +36,13 @@ function App() {
               {user && <Redirect to="/" />}
               {!user && <Register />}
             </Route>
-            <Route path="/projects/:id">
+            {/* <Route path="/projects/:id">
               {!user && <Redirect to="/login" />}
               <Projects />
+            </Route> */}
+            <Route path="/requests/:id">
+              {!user && <Redirect to="/login" />}
+              <Requests />
             </Route>
             <Route path="/reset">
               <ResetPassword />

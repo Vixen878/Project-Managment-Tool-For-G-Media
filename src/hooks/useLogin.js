@@ -50,6 +50,7 @@ export const UseLogin = () => {
         try {
             const response = await signInWithPopup(auth, googleProvider)
             const displayName = await response.user.displayName;
+            console.log(response, "bala: " ,  response.user)
 
             // create user document
             let exists = (await getDoc(doc(db, "clients", response.user.uid))).exists()
