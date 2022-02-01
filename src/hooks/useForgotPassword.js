@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { auth } from '../firebase/config'
 import { sendPasswordResetEmail } from 'firebase/auth'
 
 export const UseForgotPassword = () => {
-    const [isCancelled, setIsCancelled] = useState(false)
+    const [isCancelled] = useState(false)
     const [error, setError] = useState(null)
     const [isPending, setIsPending] = useState(null)
 
@@ -13,7 +13,7 @@ export const UseForgotPassword = () => {
         setIsPending(true)
 
         try {
-            const result = await sendPasswordResetEmail(auth, email)
+            await sendPasswordResetEmail(auth, email)
             
             // update state
             if (!isCancelled) {

@@ -1,4 +1,3 @@
-import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react'
 import { UseForgotPassword } from '../hooks/useForgotPassword'
 import { useHistory } from 'react-router-dom';
@@ -19,9 +18,6 @@ function ResetPassword() {
             })
             .catch((error) => {
                 console.log(error)
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ..
             });
     }
 
