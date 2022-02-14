@@ -18,7 +18,8 @@ export default function Tabs() {
 
     const { documents, error } = UseCollection(
         'requests',
-        ["uid", "==", user.uid]
+        ["uid", "==", user.uid],
+        ["isApproved", "==", false]
     )
 
 

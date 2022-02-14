@@ -50,7 +50,7 @@ export default function RequestSummary({ request }) {
 
         console.log("This are the messages: ", user2)
 
-        const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`
+        const id = request.id
 
 
         // get messages
@@ -79,7 +79,7 @@ export default function RequestSummary({ request }) {
 
         const user2 = cID
 
-        const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`
+        const id = request.id
 
         let url;
         if (file) {

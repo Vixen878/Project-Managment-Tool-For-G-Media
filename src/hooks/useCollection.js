@@ -4,16 +4,21 @@ import { query, where } from "firebase/firestore";
 
 import { collection, onSnapshot } from 'firebase/firestore'
 
-export const UseCollection = (col, _q) => {
+export const UseCollection = (col, _q, _sq = null) => {
     const [documents, setDocuments] = useState(null)
 
     const q = useRef(_q).current
+    const sq = useRef(_sq).current
 
     useEffect(() => {
         let ref = collection(db, col)
 
         if (q) {
-            ref = query(ref, where(...q))
+            if (sq === null) {
+                ref = query(ref, where(...q))
+            } else {
+                ref = query(ref, where(...q), where(...sq))
+            }
         }
 
         const unsubscribe = onSnapshot(ref, (snapshot) => {
@@ -25,7 +30,7 @@ export const UseCollection = (col, _q) => {
         })
 
         return () => unsubscribe()
-    }, [col, q])
+    }, [col, q, sq])
 
     return { documents }
 }   

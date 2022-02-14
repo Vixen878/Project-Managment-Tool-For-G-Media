@@ -9,6 +9,14 @@ function Requests() {
     const { document, error } = UseDocument('requests', id)
 
     if (error) {
+        return <div className="text-red-900">{error}</div>
+    }
+
+    if (!document) {
+        return <div>Loading...</div>
+    }
+
+    if (document.isApproved) {
         return (
             <div className="flex mt-16 flex-col w-full justify-center items-center">
                 <span className="text-6xl font-bold text-primaryGreen">HOORAY!!!</span>
@@ -23,17 +31,13 @@ function Requests() {
                 </div>
             </div>
         )
+    } else {
+        return (
+            <div className="w-full">
+                <RequestSummary request={document} />
+            </div>
+        )
     }
-
-    if (!document) {
-        return <div>Loading...</div>
-    }
-
-    return (
-        <div className="w-full">
-            <RequestSummary request={document} />
-        </div>
-    )
 }
 
 export default Requests
