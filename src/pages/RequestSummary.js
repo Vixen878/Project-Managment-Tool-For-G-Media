@@ -21,9 +21,7 @@ export default function RequestSummary({ request }) {
     const { user } = UseAuthContext()
     const user1 = user.uid
     //console.log("user1 is: ", user1)
-
-    const [chat, setChat] = useState("")
-
+    
     const [text, setText] = useState("")
     const [file, setFile] = useState("")
     const [messages, setMessages] = useState([])
@@ -35,15 +33,11 @@ export default function RequestSummary({ request }) {
         categories.push(request.category[i].value.Category);
     }
 
-    
-
-    const selectChat = async (doc) => {
-        setChat(doc)
-
+    useEffect(() => {
         // user index
         var amID = []
-        for (var i = 0; i < doc.length; i++) {
-            amID.push(doc[i].Acid)
+        for (var i = 0; i < documents?.length; i++) {
+            amID.push(documents[i].Acid)
         }
 
         const user2 = amID
@@ -57,23 +51,25 @@ export default function RequestSummary({ request }) {
         const msgsRef = collection(db, 'messages', id, 'chat')
         const q = query(msgsRef, orderBy('createdAt', 'asc'))
 
-        onSnapshot(q, querySnapshot => {
+        const unsubscribe = onSnapshot(q, querySnapshot => {
             let msgs = []
             querySnapshot.forEach(d => {
                 msgs.push(d.data())
             })
             setMessages(msgs)
         })
-
-    }
+        return () => {
+            unsubscribe()
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         // user index
         var cID = []
-        for (var i = 0; i < chat.length; i++) {
-            cID.push(chat[i].Acid)
+        for (var i = 0; i < documents.length; i++) {
+            cID.push(documents[i].Acid)
         }
 
 
@@ -127,8 +123,7 @@ export default function RequestSummary({ request }) {
                         {request.description}
                     </span>
                     <div
-                        className="rounded-md mt-6 bg-primaryGreen w-auto p-4 cursor-pointer text-white"
-                        onClick={() => selectChat(documents)}>
+                        className="rounded-md mt-6 bg-primaryGreen w-auto p-4 cursor-pointer text-white">
                         <span>
                             Open Chat
                         </span>
@@ -136,25 +131,18 @@ export default function RequestSummary({ request }) {
                 </div>
             </div>
             <div className="w-1/2 p-5 rounded-lg border">   
-                {chat ?
-                    (
-                        <div className="font-semibold h-screen w-full">
-                            <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
-                                <div className="overflow-y-auto text-sm border-b-2">
-                                    {messages.length ? messages.map((msg, i) => <Message key={i} msg={msg} user1={user1} />) : null}
-                                </div>
-                                <MessageForm
-                                    handleSubmit={handleSubmit}
-                                    text={text}
-                                    setText={setText}
-                                    setFile={setFile} />
-                            </div>
+                <div className="font-semibold h-screen w-full">
+                    <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
+                        <div className="overflow-y-auto text-sm border-b-2">
+                            {messages.length ? messages.map((msg, i) => <Message key={i} msg={msg} user1={user1} />) : null}
                         </div>
-                    ) :
-                    (
-                        <div className="flex items-center justify-center">Select The Client To Start Conversation</div>
-                    )
-                }
+                        <MessageForm
+                            handleSubmit={handleSubmit}
+                            text={text}
+                            setText={setText}
+                            setFile={setFile} />
+                    </div>
+                </div>
             </div>
         </div>
 
