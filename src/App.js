@@ -43,7 +43,7 @@ function App() {
             </Route> */}
             <Route path="/settings">
               {!user && <Redirect to="/login" />}
-              <Settings />
+              {user && <Settings />}
             </Route>
             <Route path="/requests/:id">
               {!user && <Redirect to="/login" />}
