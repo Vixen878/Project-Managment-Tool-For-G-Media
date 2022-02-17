@@ -49,8 +49,20 @@ export const UseLogin = () => {
 
         try {
             const response = await signInWithPopup(auth, googleProvider)
-            const displayName = await response.user.displayName;
-            console.log(response, "bala: " ,  response.user)
+            const displayName = response.user.displayName;
+
+            let userData = (await getDoc(doc(db, "clients", response.user.uid))).data()
+
+            let profilePicture = (userData == null) ? response.user.photoURL : userData.profilePicture
+            let isDefaultProfilePicture = false
+
+            if (userData == null && response.user.photoURL == null) {
+                profilePicture = "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+                isDefaultProfilePicture = true
+            } else if (userData?.isDefaultProfilePicture && response.user.photoURL != null) {
+                profilePicture = response.user.photoURL
+                isDefaultProfilePicture = false
+            }
 
             // create user document
             let exists = (await getDoc(doc(db, "clients", response.user.uid))).exists()
@@ -58,11 +70,15 @@ export const UseLogin = () => {
             if (!exists) {
                 await setDoc(doc(db, "clients", response.user.uid), {
                     online: true,
-                    displayName
+                    displayName,
+                    profilePicture,
+                    isDefaultProfilePicture
                 })
             } else {
                 await updateDoc(doc(db, "clients", response.user.uid), {
                     online: true,
+                    profilePicture,
+                    isDefaultProfilePicture
                 })
             }
 

@@ -3,7 +3,7 @@ import { auth, fbAuth, googleProvider, db } from '../firebase/config'
 import { useState, useEffect } from 'react'
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from 'firebase/auth'
 import { UseAuthContext } from './useAuthContext'
-import { getDoc, setDoc, doc } from '@firebase/firestore';
+import { getDoc, setDoc, doc, updateDoc } from '@firebase/firestore';
 
 export const UseSignup = () => {
 
@@ -31,7 +31,9 @@ export const UseSignup = () => {
             // create user document
             await setDoc(doc(db, "clients", response.user.uid), {
                 online: true,
-                displayName
+                displayName,
+                profilePicture: "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg",
+                isDefaultProfilePicture: true
             });
 
             // dispatch login action
@@ -59,7 +61,19 @@ export const UseSignup = () => {
         try {
             const response = await signInWithPopup(auth, googleProvider)
 
-            const displayName = await response.user.displayName;
+            const displayName = response.user.displayName;
+            let userData = (await getDoc(doc(db, "clients", response.user.uid))).data()
+
+            let profilePicture = (userData == null) ? response.user.photoURL : userData.profilePicture
+            let isDefaultProfilePicture = false
+
+            if (userData == null && response.user.photoURL == null) {
+                profilePicture = "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+                isDefaultProfilePicture = true
+            } else if (userData?.isDefaultProfilePicture && response.user.photoURL != null) {
+                profilePicture = response.user.photoURL
+                isDefaultProfilePicture = false
+            }
 
             // create user document
             let exists = (await getDoc(doc(db, "clients", response.user.uid))).exists()
@@ -67,7 +81,15 @@ export const UseSignup = () => {
             if (!exists) {
                 await setDoc(doc(db, "clients", response.user.uid), {
                     online: true,
-                    displayName
+                    displayName,
+                    profilePicture,
+                    isDefaultProfilePicture
+                })
+            } else {
+                await updateDoc(doc(db, "clients", response.user.uid), {
+                    online: true,
+                    profilePicture,
+                    isDefaultProfilePicture
                 })
             }
 
@@ -98,6 +120,13 @@ export const UseSignup = () => {
             const response = await signInWithPopup(auth, fbAuth)
 
             const displayName = await response.user.displayName;
+            let profilePicture = await response.user.photoURL;
+            let isDefaultProfilePicture = false
+
+            if (response.user.photoURL == null) {
+                profilePicture = "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+                isDefaultProfilePicture = true
+            }
 
             // create user document
             let exists = (await getDoc(doc(db, "clients", response.user.uid))).exists()
@@ -105,7 +134,9 @@ export const UseSignup = () => {
             if (!exists) {
                 await setDoc(doc(db, "clients", response.user.uid), {
                     online: true,
-                    displayName
+                    displayName,
+                    profilePicture,
+                    isDefaultProfilePicture
                 })
             }
 
