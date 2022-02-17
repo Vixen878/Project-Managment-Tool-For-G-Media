@@ -135,7 +135,7 @@ export default function RequestSummary({ request }) {
                     </div>
                 </div>
             </div>
-            <div className="w-1/2 p-5 rounded-lg border">
+            <div className="w-1/2 p-5 rounded-lg border">   
                 {chat ?
                     (
                         <div className="font-semibold h-screen w-full">
@@ -148,7 +148,6 @@ export default function RequestSummary({ request }) {
                                     text={text}
                                     setText={setText}
                                     setFile={setFile} />
-                                )
                             </div>
                         </div>
                     ) :
