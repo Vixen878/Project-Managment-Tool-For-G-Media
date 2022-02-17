@@ -63,7 +63,7 @@ export default function NavBar() {
                     </motion.div>
                 </nav>
                 <div>
-                    <Avatar src={document?.profilePicture} userName={user.displayName} emailAddress={user.email} />
+                    <Avatar src={document?.profilePicture} userName={document?.displayName} emailAddress={user.email} />
                 </div>
             </div>
         </div>

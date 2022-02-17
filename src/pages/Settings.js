@@ -4,7 +4,7 @@ import { db } from '../firebase/config'
 import { UseAuthContext } from "../hooks/useAuthContext";
 import { UseDocument } from "../hooks/useDocument"
 
-import { getDoc, setDoc, doc, updateDoc } from '@firebase/firestore';
+import { doc, updateDoc } from '@firebase/firestore';
 
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { storage } from "../firebase/config"
@@ -13,11 +13,12 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Settings() {
-    const [fileInputName, setInputFileName] = useState(null);
-    const [isProfilePictureUploadPending, setIsProfilePictureUploadPending] = useState(false);
-
     const { user } = UseAuthContext()
     const { document } = UseDocument('clients', user.uid)
+
+    const [displayName, setDisplayName] = useState(null);
+    const [fileInputName, setInputFileName] = useState(null);
+    const [isProfilePictureUploadPending, setIsProfilePictureUploadPending] = useState(false);
 
     function fileInput(event) {
         setInputFileName(event.target.files[0])
@@ -33,24 +34,36 @@ function Settings() {
         const storageRef = await ref(storage, uploadPath)
         const uploadTask = uploadBytesResumable(storageRef, file)
 
-        uploadTask.on("state_changed", (snapshot) => {
+        uploadTask.on("state_changed", () => {
 
         },
-        (err) => console.log(err),
-        async () => {
-            await getDownloadURL(uploadTask.snapshot.ref)
-                .then(async (profilePictureURL) => {
-                    await updateDoc(doc(db, "clients", user.uid), {
-                        profilePicture: profilePictureURL,
-                        isDefaultProfilePicture: false
+            (err) => console.log(err),
+            async () => {
+                await getDownloadURL(uploadTask.snapshot.ref)
+                    .then(async (profilePictureURL) => {
+                        await updateDoc(doc(db, "clients", user.uid), {
+                            profilePicture: profilePictureURL,
+                            isDefaultProfilePicture: false
+                        })
+
+                        toast.info('Profile picture changed successfully', { autoClose: 5000 })
+
+                        setIsProfilePictureUploadPending(false)
                     })
-
-                    toast.info('Profile picture changed successfully', { autoClose: 5000 })
-
-                    setIsProfilePictureUploadPending(false)
-                })
             }
         )
+    }
+
+    async function onNameChanged(newName) {
+        try {
+            await updateDoc(doc(db, "clients", user.uid), {
+                displayName: newName
+            })
+
+            toast.info('Display name changed', { autoClose: 2000 })
+        } catch {
+            toast.error('Error changing name', { autoClose: 6000 })
+        }
     }
 
     return (
@@ -103,6 +116,19 @@ function Settings() {
                     </button>}
                 </div>
             </form>
+
+            {document &&
+                <div className="mt-6">
+                    <span className="text-lg text-gray-600 font-semibold">Display Name</span>
+                    <input
+                        onKeyPress={(e) => e.key === 'Enter' && onNameChanged(e.target.value)}
+                        onChange={e => setDisplayName(e.target.value)}
+                        value={displayName}
+                        type="text"
+                        required
+                        placeholder="Display Name"
+                        className="p-2 mt-2 rounded-md focus:outline-none focus:ring-1 focus:to-blue-700 border w-full" />
+                </div>}
         </div>
     );
 }
