@@ -1,28 +1,35 @@
 import React, { useState } from 'react'
-import { UseForgotPassword } from '../hooks/useForgotPassword'
 import { useHistory } from 'react-router-dom';
 import AnimatedBlurBlobs from '../components/AnimatedBlurBlobs';
 import LoginLeftSideComponent from '../components/LoginLeftSideComponent';
+import { auth } from '../firebase/config'
+import { sendPasswordResetEmail } from 'firebase/auth'
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ResetPassword() {
 
     const history = useHistory()
 
     const [email, setLoginEmail] = useState(null);
-    const { forgotPassword, isPending } = UseForgotPassword()
+    const [isPending, setIsPending] = useState(null)
 
-    const handleForgotPassword = () => {
-        forgotPassword(email)
-            .then(() => {
-                // Password reset email sent!
-                // ..
-                history.push('/login', { status: 'Password reset email sent!'})
-            })
-            .catch((error) => {
-                console.log(error)
-            });
+    const handleForgotPassword = async () => {
+        setIsPending(true)
+
+        try {
+            await sendPasswordResetEmail(auth, email)
+
+            toast.info('Password reset email sent.', { autoClose: 5000 })
+
+            history.push('/login', { status: 'Password reset email sent!' })
+        } catch (err) {
+            toast.error(err.message, { autoClose: 5000 })
+        }
+
+        setIsPending(false)
     }
-
 
     return (
         <div className='w-screen h-screen relative flex justify-center items-center px-16 overflow-hidden'>

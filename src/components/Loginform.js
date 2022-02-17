@@ -70,7 +70,7 @@ function Loginform() {
                 <label for="password" className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Password</label>
             </div>
             <div className='mt-5'>
-                <a onClick={redirectForgotPassword} className="mt-6 block text-sm font-medium text-secondaryGreen hover:underline focus:outline-none focus:ring-2 focus:ring-green-500"> Forgot your password? </a>
+                <a onClick={redirectForgotPassword} className="cursor-pointer mt-6 block text-sm font-medium text-secondaryGreen hover:underline focus:outline-none focus:ring-2 focus:ring-green-500"> Forgot your password? </a>
                 {}
                 {!isPending && <button onClick={handleLogin} class="w-full mt-5 px-4 py-2 rounded bg-primaryGreen hover:bg-secondaryGreen text-white font-semibold text-center block focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primaryGreen">Sign In</button>}
                 {isPending && <button className="cursor-not-allowed w-full mt-5 px-4 py-2 rounded bg-primaryGreen hover:bg-secondaryGreen text-white font-semibold text-center block focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primaryGreen">Loading</button>}

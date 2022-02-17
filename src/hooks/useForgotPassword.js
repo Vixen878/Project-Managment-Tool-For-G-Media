@@ -8,7 +8,7 @@ export const UseForgotPassword = () => {
     const [isPending, setIsPending] = useState(null)
 
 
-    const forgotPassword = async (email) => {
+    const forgotPassword = async (email, done) => {
         setError(null)
         setIsPending(true)
 
@@ -22,11 +22,13 @@ export const UseForgotPassword = () => {
             }
         } catch (err) {
             if (!isCancelled) {
-                console.log(err.message)
+                // console.log(err.message)
                 setError(err.message)
                 setIsPending(false)
             }
         }
+
+        done()
     }
 
     return { forgotPassword, error, isPending }
