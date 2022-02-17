@@ -4,7 +4,6 @@ import Message from "../components/Message";
 import { useParams } from "react-router-dom";
 import MessageForm from "../components/MessageForm";
 import { UseAuthContext } from "../hooks/useAuthContext"
-import { UseDocument } from '../hooks/useDocument';
 
 import { collection, onSnapshot, query, addDoc, doc, where, Timestamp, orderBy, getDoc, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
@@ -22,11 +21,26 @@ export default function RequestSummary({ request }) {
     const user1 = user.uid
     //console.log("user1 is: ", user1)
 
-    const [chat, setChat] = useState("")
-
     const [text, setText] = useState("")
     const [file, setFile] = useState("")
     const [messages, setMessages] = useState([])
+
+    useEffect(() => {
+        const msgsRef = collection(db, 'messages', id, 'chat')
+        const q = query(msgsRef, orderBy('createdAt', 'asc'))
+
+        var unsubscribe = onSnapshot(q, querySnapshot => {
+            let msgs = []
+            querySnapshot.forEach(d => {
+                msgs.push(d.data())
+            })
+            setMessages(msgs)
+        })
+
+        return () => {
+            unsubscribe()
+        };
+    }, []);
 
 
     // setChat(user)
@@ -35,47 +49,14 @@ export default function RequestSummary({ request }) {
         categories.push(request.category[i].value.Category);
     }
 
-    
-
-    const selectChat = async (doc) => {
-        setChat(doc)
-
-        // user index
-        var amID = []
-        for (var i = 0; i < doc.length; i++) {
-            amID.push(doc[i].Acid)
-        }
-
-        const user2 = amID
-
-        console.log("This are the messages: ", user2)
-
-        const id = request.id
-
-
-        // get messages
-        const msgsRef = collection(db, 'messages', id, 'chat')
-        const q = query(msgsRef, orderBy('createdAt', 'asc'))
-
-        onSnapshot(q, querySnapshot => {
-            let msgs = []
-            querySnapshot.forEach(d => {
-                msgs.push(d.data())
-            })
-            setMessages(msgs)
-        })
-
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         // user index
         var cID = []
-        for (var i = 0; i < chat.length; i++) {
-            cID.push(chat[i].Acid)
+        for (var i = 0; i < documents.length; i++) {
+            cID.push(documents[i].Acid)
         }
-
 
         const user2 = cID
 
@@ -100,7 +81,7 @@ export default function RequestSummary({ request }) {
     }
 
     return (
-        <div className="h-screen flex px-11 pt-24">
+        <div className="h-screen flex px-11 pt-12">
             <div className="w-1/2 p-5">
                 <div>
                     <span className="text-4xl text-gray-700 font-bold">{request.name}</span>
@@ -126,35 +107,21 @@ export default function RequestSummary({ request }) {
                     <span className="text-lg mt-1 text-gray-500">
                         {request.description}
                     </span>
-                    <div
-                        className="rounded-md mt-6 bg-primaryGreen w-auto p-4 cursor-pointer text-white"
-                        onClick={() => selectChat(documents)}>
-                        <span>
-                            Open Chat
-                        </span>
-                    </div>
                 </div>
             </div>
-            <div className="w-1/2 p-5 rounded-lg border">   
-                {chat ?
-                    (
-                        <div className="font-semibold h-screen w-full">
-                            <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
-                                <div className="overflow-y-auto text-sm border-b-2">
-                                    {messages.length ? messages.map((msg, i) => <Message key={i} msg={msg} user1={user1} />) : null}
-                                </div>
-                                <MessageForm
-                                    handleSubmit={handleSubmit}
-                                    text={text}
-                                    setText={setText}
-                                    setFile={setFile} />
-                            </div>
+            <div className="w-1/2 p-5 rounded-lg border">
+                <div className="font-semibold h-screen w-full">
+                    <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
+                        <div className="overflow-y-auto text-sm border-b-2">
+                            {messages.length ? messages.map((msg, i) => <Message key={i} msg={msg} user1={user1} />) : null}
                         </div>
-                    ) :
-                    (
-                        <div className="flex items-center justify-center">Select The Client To Start Conversation</div>
-                    )
-                }
+                        <MessageForm
+                            handleSubmit={handleSubmit}
+                            text={text}
+                            setText={setText}
+                            setFile={setFile} />
+                    </div>
+                </div>
             </div>
         </div>
 

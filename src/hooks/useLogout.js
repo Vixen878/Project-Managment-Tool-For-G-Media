@@ -19,11 +19,12 @@ export const useLogout = () => {
 
             // update online status
             const { uid } = user
+            
+            signOut(auth);
+
             await updateDoc(doc(db, "clients", uid), {
                 online: false,
             })
-
-            signOut(auth);
 
             // dispatch 
             dispatch({ type: 'LOGOUT' })
