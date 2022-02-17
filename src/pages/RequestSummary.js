@@ -21,7 +21,7 @@ export default function RequestSummary({ request }) {
     const { user } = UseAuthContext()
     const user1 = user.uid
     //console.log("user1 is: ", user1)
-    
+
     const [text, setText] = useState("")
     const [file, setFile] = useState("")
     const [messages, setMessages] = useState([])
@@ -122,12 +122,6 @@ export default function RequestSummary({ request }) {
                     <span className="text-lg mt-1 text-gray-500">
                         {request.description}
                     </span>
-                    <div
-                        className="rounded-md mt-6 bg-primaryGreen w-auto p-4 cursor-pointer text-white">
-                        <span>
-                            Open Chat
-                        </span>
-                    </div>
                 </div>
             </div>
             <div className="w-1/2 p-5 rounded-lg border">   
