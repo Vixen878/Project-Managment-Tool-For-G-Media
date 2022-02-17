@@ -11,6 +11,7 @@ import ResetPassword from './pages/resetPassword';
 import NavBar from './components/NavBar';
 import { useEffect } from 'react';
 import Requests from './pages/Requests';
+import Settings from './pages/Settings';
 
 function App() {
 
@@ -40,6 +41,10 @@ function App() {
               {!user && <Redirect to="/login" />}
               <Projects />
             </Route> */}
+            <Route path="/settings">
+              {!user && <Redirect to="/login" />}
+              <Settings />
+            </Route>
             <Route path="/requests/:id">
               {!user && <Redirect to="/login" />}
               <Requests />
