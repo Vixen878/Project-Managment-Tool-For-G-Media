@@ -12,6 +12,7 @@ import NavBar from './components/NavBar';
 import { useEffect } from 'react';
 import Requests from './pages/Requests';
 import Settings from './pages/Settings';
+import Project from './pages/Project';
 
 function App() {
 
@@ -48,6 +49,10 @@ function App() {
             <Route path="/requests/:id">
               {!user && <Redirect to="/login" />}
               <Requests />
+            </Route>
+            <Route path="/project/:id">
+              {user && <Project />}
+              {!user && <LoginPage />}
             </Route>
             <Route path="/reset">
               <ResetPassword />

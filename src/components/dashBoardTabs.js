@@ -2,11 +2,12 @@ import { useState, Fragment } from 'react'
 import { Tab, Dialog, Transition } from '@headlessui/react'
 import CreateProjectModal from './CreateProjectModal'
 import { UseCollection } from '../hooks/useCollection'
-import ProjectsList from './ProjectsList'
+import PendingProjectsList from './PendingProjectsList'
 import { motion } from 'framer-motion'
 import { OnGoingProjectsCounter } from './OnGoingProjectsCounter'
 import { OverallProjectCounter } from './OverallProjectCounter'
 import { UseAuthContext } from '../hooks/useAuthContext'
+import OnGoingProjectsList from './OnGoingProjectsList'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -16,11 +17,17 @@ export default function Tabs() {
 
     const { user } = UseAuthContext()
 
-    const { documents, error } = UseCollection(
+    const pendingProjects = UseCollection(
         'requests',
         ["uid", "==", user.uid],
         ["isApproved", "==", false]
-    )
+    ).documents
+
+    const ongoingProjects = UseCollection(
+        'requests',
+        // ["uid", "==", user.uid],
+        ["isApproved", "==", true]
+    ).documents
 
 
     let [isOpen, setIsOpen] = useState(false)
@@ -102,7 +109,8 @@ export default function Tabs() {
                     >
                         <div className='flex flex-col justify-center items-center'>
                             <div className='text-4xl'>
-                                {documents && <span>{documents.length}</span>}
+                                {pendingProjects && <span>{pendingProjects.length}</span>}
+                                {!pendingProjects && <span>...</span>}
                             </div>
                             <div className='text-base font-semibold'>
                                 Pending Requests
@@ -123,8 +131,8 @@ export default function Tabs() {
                     >
                         <div className='flex flex-col justify-center items-center'>
                             <div className='text-4xl'>
-                                {/* Get on going component counter here */}
-                                {OnGoingProjectsCounter()}
+                                {ongoingProjects && <span>{ongoingProjects.length}</span>}
+                                {!ongoingProjects && <span>...</span>}
                             </div>
                             <div className='text-base font-semibold'>
                                 On Going
@@ -191,32 +199,13 @@ export default function Tabs() {
                                 </span>
                             </motion.div>
                         </div>
-                        {documents && <ProjectsList projects={documents} />}
-
-
-                        {/* <div className='bg-[#70ffcf] flex flex-col justify-evenly items-center w-72 h-72 rounded-3xl shadow-lg'>
-                                <div className='flex flex-col items-center'>
-                                    <div className='text-lg font-bold'>
-                                        Motion Graphics
-                                    </div>
-                                    <div className='text-base'>
-                                        Prototype
-                                    </div>
-                                </div>
-                                <div className='text-sm flex flex-col justify-start w-full p-5'>
-                                    <div>
-                                        Progress (100%)
-                                    </div>
-                                    <div className='h-2 mt-2 w-full rounded-md bg-gradient-to-tr from-emerald-300 via-purple-500 to-red-400'>
-
-                                    </div>
-                                </div>
-                                <div>
-
-                                </div>
-                            </div>
-                            
-                            </div> */}
+                            {pendingProjects && <PendingProjectsList projects={pendingProjects} />}
+                    </Tab.Panel>
+                    
+                    <Tab.Panel>
+                        <div className='flex justify-center w-full'>
+                            {ongoingProjects && <OnGoingProjectsList projects={ongoingProjects} />}
+                        </div>
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
