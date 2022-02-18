@@ -4,11 +4,13 @@ import { UseAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import AnimatedBlurBlobs from "./AnimatedBlurBlobs";
 import { motion } from "framer-motion";
+import { UseDocument } from "../hooks/useDocument"
 
 export default function NavBar() {
 
     const { user } = UseAuthContext()
-    const { logout, isPending, error } = useLogout()
+    const { logout, isPending } = useLogout()
+    const { document, error } = UseDocument('clients', user.uid)
 
     return (
         <div
@@ -61,7 +63,7 @@ export default function NavBar() {
                     </motion.div>
                 </nav>
                 <div>
-                    <Avatar src={user.photoURL} userName={user.displayName} emailAddress={user.email} />
+                    <Avatar src={document?.profilePicture} userName={document?.displayName} emailAddress={user.email} />
                 </div>
             </div>
         </div>
