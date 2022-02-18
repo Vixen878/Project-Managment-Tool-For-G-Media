@@ -19,13 +19,12 @@ export default function Tabs() {
 
     const pendingProjects = UseCollection(
         'requests',
-        ["uid", "==", user.uid],
         ["isApproved", "==", false]
     ).documents
 
     const ongoingProjects = UseCollection(
         'requests',
-        // ["uid", "==", user.uid],
+        ["uid", "==", user.uid],
         ["isApproved", "==", true]
     ).documents
 
