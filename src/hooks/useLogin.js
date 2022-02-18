@@ -17,15 +17,30 @@ export const UseLogin = () => {
 
         // sign in the user with email and password
         try {
-            const res = await signInWithEmailAndPassword(auth, email, password)
+            const response = await signInWithEmailAndPassword(auth, email, password)
+
+            let userData = (await getDoc(doc(db, "clients", response.user.uid))).data()
+
+            let profilePicture = (userData == null) ? response.user.photoURL : userData.profilePicture
+            let isDefaultProfilePicture = false
+
+            if (userData == null || userData.profilePicture == null) {
+                profilePicture = "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+                isDefaultProfilePicture = true
+            } else if (userData?.isDefaultProfilePicture && response.user.photoURL != null) {
+                profilePicture = response.user.photoURL
+                isDefaultProfilePicture = false
+            }
 
             // update online status
-            await updateDoc(doc(db, "clients", res.user.uid), {
+            await updateDoc(doc(db, "clients", response.user.uid), {
                 online: true,
+                profilePicture,
+                isDefaultProfilePicture
             })
 
             // dispatch a login action
-            dispatch({ type: 'LOGIN', payload: res.user })
+            dispatch({ type: 'LOGIN', payload: response.user })
 
             // update state
             if (!isCancelled) {
