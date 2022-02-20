@@ -45,7 +45,7 @@ export default function RequestSummary({ request }) {
                 </div>
             </div>
             <div className="w-1/2 p-5">
-                <Chat id={id} />
+                <Chat id={id} project={request} />
                 {/* <div className="font-semibold h-screen w-full">
                     <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
                         <div className="overflow-y-auto text-sm border-b-2">

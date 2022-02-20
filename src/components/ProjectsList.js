@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-export default function OnGoingProjectsList({ projects }) {
+export default function ProjectsList({ projects }) {
 
     return (
         <div className="h-[500px]">
@@ -11,7 +11,7 @@ export default function OnGoingProjectsList({ projects }) {
             <div className="mt-7">
                 <div className="grid grid-cols-3 px-6 gap-6">
                     {projects.map(project => (
-                        <Link to={`/project/${project.id}`} key={project.id}>
+                        <Link to={!project.isCompleted && !project.isApproved ? `/requests/${project.id}` : `/project/${project.id}`} key={project.id}>
                             <div onClick={null} className='w-72 h-72 shadow-xl flex flex-col justify-center rounded-3xl items-center space-x-2'>
                                 <h4>{project.name}</h4>
                                 <p>Due by: {project.dueDate.toDate().toDateString()}</p>
@@ -21,7 +21,6 @@ export default function OnGoingProjectsList({ projects }) {
                         </Link>
                     ))}
                 </div>
-
             </div>
         </div>
     )

@@ -2,12 +2,9 @@ import { useState, Fragment } from 'react'
 import { Tab, Dialog, Transition } from '@headlessui/react'
 import CreateProjectModal from './CreateProjectModal'
 import { UseCollection } from '../hooks/useCollection'
-import PendingProjectsList from './PendingProjectsList'
 import { motion } from 'framer-motion'
-import { OnGoingProjectsCounter } from './OnGoingProjectsCounter'
-import { OverallProjectCounter } from './OverallProjectCounter'
 import { UseAuthContext } from '../hooks/useAuthContext'
-import OnGoingProjectsList from './OnGoingProjectsList'
+import ProjectsList from './ProjectsList'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -17,18 +14,16 @@ export default function Tabs() {
 
     const { user } = UseAuthContext()
 
-    const pendingProjects = UseCollection(
+    const allProjects = UseCollection(
         'requests',
-        ["uid", "==", user.uid],
-        ["isApproved", "==", false]
+        ["uid", "==", user.uid]
     ).documents
 
-    const ongoingProjects = UseCollection(
-        'requests',
-        ["uid", "==", user.uid],
-        ["isApproved", "==", true]
-    ).documents
+    console.log(allProjects);
 
+    const pendingProjects = allProjects?.filter(p => !p.isCompleted && !p.isApproved)
+    const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved)
+    const completedProjects = allProjects?.filter(p => p.isCompleted)
 
     let [isOpen, setIsOpen] = useState(false)
 
@@ -153,8 +148,8 @@ export default function Tabs() {
                     >
                         <div className='flex flex-col justify-center items-center'>
                             <div className='text-4xl'>
-                                {/* Get completed component counter here */}
-                                0
+                                {completedProjects && <span>{completedProjects.length}</span>}
+                                {!completedProjects && <span>...</span>}
                             </div>
                             <div className='text-base font-semibold'>
                                 Completed
@@ -175,11 +170,11 @@ export default function Tabs() {
                     >
                         <div className='flex flex-col justify-center items-center'>
                             <div className='text-4xl'>
-                                {/* Get completed component counter here */}
-                                {OverallProjectCounter()}
+                                {allProjects && <span>{allProjects.length}</span>}
+                                {!allProjects && <span>...</span>}
                             </div>
                             <div className='text-base font-semibold'>
-                                Over All
+                                Overall
                             </div>
                         </div>
                     </Tab>
@@ -199,12 +194,24 @@ export default function Tabs() {
                                 </span>
                             </motion.div>
                         </div>
-                        {pendingProjects && <PendingProjectsList projects={pendingProjects} />}
+                        {pendingProjects && <ProjectsList projects={pendingProjects} />}
                     </Tab.Panel>
 
                     <Tab.Panel>
                         <div className='flex justify-center w-full'>
-                            {ongoingProjects && <OnGoingProjectsList projects={ongoingProjects} />}
+                            {ongoingProjects && <ProjectsList projects={ongoingProjects} />}
+                        </div>
+                    </Tab.Panel>
+
+                    <Tab.Panel>
+                        <div className='flex justify-center w-full'>
+                            {completedProjects && <ProjectsList projects={completedProjects} />}
+                        </div>
+                    </Tab.Panel>
+
+                    <Tab.Panel>
+                        <div className='flex justify-center w-full'>
+                            {allProjects && <ProjectsList projects={allProjects} />}
                         </div>
                     </Tab.Panel>
                 </Tab.Panels>
