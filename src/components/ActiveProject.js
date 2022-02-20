@@ -68,7 +68,7 @@ function ActiveProject() {
                 </div>
                 <div className="flex h-full">
                     <div className="w-3/4 relative pt-3">
-                        {document.isCompleted &&
+                        {document?.isCompleted &&
                             <div className="absolute h-full w-full flex items-center justify-center backdrop-blur-md">
                                 <span className="text-green-700 text-2xl">Project completed</span>
                             </div>
