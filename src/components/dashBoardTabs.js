@@ -19,7 +19,7 @@ export default function Tabs() {
 
     const pendingProjects = UseCollection(
         'requests',
-	["uid", "==", user.uid],
+        ["uid", "==", user.uid],
         ["isApproved", "==", false]
     ).documents
 
@@ -199,9 +199,9 @@ export default function Tabs() {
                                 </span>
                             </motion.div>
                         </div>
-                            {pendingProjects && <PendingProjectsList projects={pendingProjects} />}
+                        {pendingProjects && <PendingProjectsList projects={pendingProjects} />}
                     </Tab.Panel>
-                    
+
                     <Tab.Panel>
                         <div className='flex justify-center w-full'>
                             {ongoingProjects && <OnGoingProjectsList projects={ongoingProjects} />}

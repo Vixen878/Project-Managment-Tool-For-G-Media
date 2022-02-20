@@ -25,7 +25,7 @@ export default function NavBar() {
 
                 <nav className="flex flex-col mt-24 ml-24 space-y-10">
                     <div className="pb-10">
-                        <img src="Header_Logo.png" alt="" />
+                        <img src="/Header_Logo.png" alt="" />
                     </div>
                     <motion.div
                         whileHover={{ scale: 1.1, originX: 0 }}

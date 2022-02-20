@@ -22,45 +22,47 @@ function App() {
     <div className='flex'>
       {authIsReady && (
         <BrowserRouter>
-          <div className='flex'>
-            {user && <NavBar />}
-          </div>
-          <Switch>
-            <Route exact path="/">
-              {!user && <Redirect to="/login" />}
-              {user && <Dashboard />}
-            </Route>
-            <Route path="/login" >
-              {user && <Redirect to="/" />}
-              {!user && <LoginPage />}
-            </Route>
-            <Route path="/register">
-              {user && <Redirect to="/" />}
-              {!user && <Register />}
-            </Route>
-            {/* <Route path="/projects/:id">
+          {user && <div className='flex w-[20%]'>
+            <NavBar />
+          </div>}
+          <div className={user ? 'w-[80%]' : 'w-full'}>
+            <Switch>
+              <Route exact path="/">
+                {!user && <Redirect to="/login" />}
+                {user && <Dashboard />}
+              </Route>
+              <Route path="/login" >
+                {user && <Redirect to="/" />}
+                {!user && <LoginPage />}
+              </Route>
+              <Route path="/register">
+                {user && <Redirect to="/" />}
+                {!user && <Register />}
+              </Route>
+              {/* <Route path="/projects/:id">
               {!user && <Redirect to="/login" />}
               <Projects />
             </Route> */}
-            <Route path="/settings">
-              {!user && <Redirect to="/login" />}
-              {user && <Settings />}
-            </Route>
-            <Route path="/requests/:id">
-              {!user && <Redirect to="/login" />}
-              <Requests />
-            </Route>
-            <Route path="/project/:id">
-              {user && <Project />}
-              {!user && <LoginPage />}
-            </Route>
-            <Route path="/reset">
-              <ResetPassword />
-            </Route>
-            <Route path="*">
-              <ErrorPage />
-            </Route>
-          </Switch>
+              <Route path="/settings">
+                {!user && <Redirect to="/login" />}
+                {user && <Settings />}
+              </Route>
+              <Route path="/requests/:id">
+                {!user && <Redirect to="/login" />}
+                <Requests />
+              </Route>
+              <Route path="/project/:id">
+                {user && <Project />}
+                {!user && <LoginPage />}
+              </Route>
+              <Route path="/reset">
+                <ResetPassword />
+              </Route>
+              <Route path="*">
+                <ErrorPage />
+              </Route>
+            </Switch>
+          </div>
         </BrowserRouter>
       )}
 

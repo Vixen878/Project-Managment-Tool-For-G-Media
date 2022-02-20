@@ -1,98 +1,18 @@
 // import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import { useState, useEffect } from "react";
-import Message from "../components/Message";
 import { useParams } from "react-router-dom";
-import MessageForm from "../components/MessageForm";
-import { UseAuthContext } from "../hooks/useAuthContext"
-import { UseDocument } from '../hooks/useDocument';
 
-import { collection, onSnapshot, query, addDoc, doc, where, Timestamp, orderBy, getDoc, getDocs } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { db, storage } from "../firebase/config";
-import { UseCollection } from "../hooks/useCollection";
+
+import Chat from "../components/Chat";
 
 
 export default function RequestSummary({ request }) {
 
     const { id } = useParams()
-    // const { document, error } = UseDocument("messages", id);
-    const { documents } = UseCollection('messages')
 
-    const { user } = UseAuthContext()
-    const user1 = user.uid
-    //console.log("user1 is: ", user1)
-
-    const [text, setText] = useState("")
-    const [file, setFile] = useState("")
-    const [messages, setMessages] = useState([])
-
-
-    // setChat(user)
     var categories = []
     for (var i = 0; i < request.category.length; i++) {
         categories.push(request.category[i].value.Category);
-    }
-
-    useEffect(() => {
-        // user index
-        var amID = []
-        for (var i = 0; i < documents?.length; i++) {
-            amID.push(documents[i].Acid)
-        }
-
-        const user2 = amID
-
-        console.log("This are the messages: ", user2)
-
-        const id = request.id
-
-
-        // get messages
-        const msgsRef = collection(db, 'messages', id, 'chat')
-        const q = query(msgsRef, orderBy('createdAt', 'asc'))
-
-        const unsubscribe = onSnapshot(q, querySnapshot => {
-            let msgs = []
-            querySnapshot.forEach(d => {
-                msgs.push(d.data())
-            })
-            setMessages(msgs)
-        })
-        return () => {
-            unsubscribe()
-        };
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        // user index
-        var cID = []
-        for (var i = 0; i < documents.length; i++) {
-            cID.push(documents[i].Acid)
-        }
-
-
-        const user2 = cID
-
-        const id = request.id
-
-        let url;
-        if (file) {
-            const fileRef = ref(storage, `chatFiles/${new Date().getTime()} - ${file.name}`)
-            const snap = await uploadBytes(fileRef, file)
-            const downloadUrl = await getDownloadURL(ref(storage, snap.ref.fullPath))
-            url = downloadUrl
-        }
-
-        await addDoc(collection(db, 'messages', id, 'chat'), {
-            text,
-            from: user1,
-            to: user2,
-            createdAt: Timestamp.fromDate(new Date()),
-            media: url || ""
-        })
-        setText("")
     }
 
     return (
@@ -124,8 +44,9 @@ export default function RequestSummary({ request }) {
                     </span>
                 </div>
             </div>
-            <div className="w-1/2 p-5 rounded-lg border">   
-                <div className="font-semibold h-screen w-full">
+            <div className="w-1/2 p-5">
+                <Chat id={id} />
+                {/* <div className="font-semibold h-screen w-full">
                     <div className="absolute pb-7 bottom-0 flex flex-col justify-between">
                         <div className="overflow-y-auto text-sm border-b-2">
                             {messages.length ? messages.map((msg, i) => <Message key={i} msg={msg} user1={user1} />) : null}
@@ -136,7 +57,7 @@ export default function RequestSummary({ request }) {
                             setText={setText}
                             setFile={setFile} />
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
 

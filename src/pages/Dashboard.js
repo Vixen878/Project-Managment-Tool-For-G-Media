@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Tabs from '../components/dashBoardTabs'
 import { motion } from 'framer-motion'
+import DashboardChatList from '../components/DashboardChatList'
 
 function Dashboard() {
     return (
@@ -36,13 +37,15 @@ function Dashboard() {
                 <div className='border shadow-xl bg-opacity-10 w-2/3 py-9 px-7 rounded-tl-3xl'>
                     <Tabs />
                 </div>
-                <div className='flex items-center justify-center p-11 w-1/3 text-4xl'>Chat Side</div>
+                <div className='flex w-1/3'>
+                    <div className='border shadow-xl bg-opacity-10 w-full py-9 px-7 rounded-tr-3xl mr-10'>
+                        <span className='text-4xl'>Chats</span>
+                        <DashboardChatList className="my-5" />
+                    </div>
+                </div>
             </div>
         </motion.div>
-
-
     )
-
 }
 
 export default Dashboard
