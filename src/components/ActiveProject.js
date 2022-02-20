@@ -8,6 +8,7 @@ import { db } from "../firebase/config";
 
 import { v4 as uuidv4 } from 'uuid';
 import Chat from "./Chat";
+import { toast } from "react-toastify";
 
 function ActiveProject() {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,21 +59,32 @@ function ActiveProject() {
 
         return (
             <div className="h-full">
-                <span className='text-4xl'>{document.name}</span>
+                <div className="flex">
+                    <div className="flex w-3/4">
+                        <span className='text-4xl'>{document.name}</span>
+                        <div className="flex-1"></div>
+                    </div>
+                    <div className="w-1/4"></div>
+                </div>
                 <div className="flex h-full">
-                    <div className="w-3/4">
+                    <div className="w-3/4 relative pt-3">
+                        {document.isCompleted &&
+                            <div className="absolute h-full w-full flex items-center justify-center backdrop-blur-md">
+                                <span className="text-green-700 text-2xl">Project completed</span>
+                            </div>
+                        }
                         <BoardWrapper
-                        board={boardData}
-                        onNewCard={onNewCard}
-                        onRenameColumn={onRenameColumn}
-                        onRenameCard={onRenameCard}
-                        onRemoveCard={onRemoveCard}
-                        onColumnNew={onColumnNew}
-                        onColumnRemove={onColumnRemove}
-                        onCardDragEnd={onCardDragEnd} />
+                            board={boardData}
+                            onNewCard={onNewCard}
+                            onRenameColumn={onRenameColumn}
+                            onRenameCard={onRenameCard}
+                            onRemoveCard={onRemoveCard}
+                            onColumnNew={onColumnNew}
+                            onColumnRemove={onColumnRemove}
+                            onCardDragEnd={onCardDragEnd} />
                     </div>
                     <div className="w-1/4 h-full mt-[-3%]">
-                        <Chat id={id} />
+                        <Chat id={id} project={document} />
                     </div>
                 </div>
             </div>
