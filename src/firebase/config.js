@@ -3,6 +3,7 @@ import { getAuth, GoogleAuthProvider, FacebookAuthProvider} from 'firebase/auth'
 import { getFirestore } from '@firebase/firestore';
 import {getStorage} from 'firebase/storage'
 
+// Firebase Reference
 const firebaseConfig = {
   apiKey: "AIzaSyAJH8ZLFC9aYdUDbqjnE7J67MICkKW5CcY",
   authDomain: "elik-project-managment-tool.firebaseapp.com",

@@ -9,7 +9,6 @@ import { UseAuthContext } from './hooks/useAuthContext'
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import ResetPassword from './pages/resetPassword';
 import NavBar from './components/NavBar';
-import { useEffect } from 'react';
 import Requests from './pages/Requests';
 import Settings from './pages/Settings';
 import Project from './pages/Project';
@@ -39,10 +38,6 @@ function App() {
                 {user && <Redirect to="/" />}
                 {!user && <Register />}
               </Route>
-              {/* <Route path="/projects/:id">
-              {!user && <Redirect to="/login" />}
-              <Projects />
-            </Route> */}
               <Route path="/settings">
                 {!user && <Redirect to="/login" />}
                 {user && <Settings />}
@@ -65,28 +60,6 @@ function App() {
           </div>
         </BrowserRouter>
       )}
-
-
-
-      {/* {authIsReady && (
-        <Router>
-          <Routes>
-            <Route path="/" element={
-              !user && <Navigate to={"/login"} />,
-              user && <Dashboard /> 
-            } />
-            <Route path="/login" element={
-              user && <Navigate to={"/"} />,
-              !user && <LoginPage />
-            } />
-            <Route path="/register" element={
-              user && <Navigate to={"/"} />,
-              !user && <Register />
-            } />
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </Router>
-      )} */}
     </div>
   );
 }
