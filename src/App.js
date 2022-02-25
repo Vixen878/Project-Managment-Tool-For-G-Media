@@ -13,6 +13,7 @@ import Requests from './pages/Requests';
 import Settings from './pages/Settings';
 import Project from './pages/Project';
 import Projects from './pages/projects';
+import Notifications from './components/Notifications'
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
               <Route path="/register">
                 {user && <Redirect to="/" />}
                 {!user && <Register />}
+              </Route>
+              <Route path="/notifications">
+                {!user && <Redirect to="/login" />}
+                {user && <Notifications />}
               </Route>
               <Route path="/settings">
                 {!user && <Redirect to="/login" />}
