@@ -120,7 +120,7 @@ function CreateProjectModal(props) {
                                 </div>
                             }
                             {fileInputName &&
-                                <div>
+                                <div className="text-center">
                                     <span>{fileInputName}</span>
                                 </div>
                             }

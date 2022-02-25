@@ -12,6 +12,7 @@ import NavBar from './components/NavBar';
 import Requests from './pages/Requests';
 import Settings from './pages/Settings';
 import Project from './pages/Project';
+import Projects from './pages/projects';
 
 function App() {
 
@@ -41,6 +42,10 @@ function App() {
               <Route path="/settings">
                 {!user && <Redirect to="/login" />}
                 {user && <Settings />}
+              </Route>
+              <Route path="/projects">
+                {user && <Projects />}
+                {!user && <LoginPage />}
               </Route>
               <Route path="/requests/:id">
                 {!user && <Redirect to="/login" />}
