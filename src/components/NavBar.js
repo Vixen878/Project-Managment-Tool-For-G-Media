@@ -21,9 +21,9 @@ export default function NavBar() {
             <div className="absolute top-[700px] -left-32 blur-lg">
                 < AnimatedBlurBlobs />
             </div>
-            <div className="flex flex-col w-[350px] h-screen bg-gred bg-opacity-[0.04] backdrop-blur-xl justify-between">
+            <div className="flex flex-col h-screen bg-gred bg-opacity-[0.04] backdrop-blur-xl justify-between">
 
-                <nav className="flex flex-col mt-24 ml-24 space-y-10">
+                <nav className="flex flex-col mt-24 mx-auto space-y-10">
                     <div className="pb-10">
                         <img src="/Header_Logo.png" alt="" />
                     </div>
