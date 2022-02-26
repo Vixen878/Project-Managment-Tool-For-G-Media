@@ -19,8 +19,6 @@ export default function Tabs() {
         ["uid", "==", user.uid]
     ).documents
 
-    console.log(allProjects);
-
     const pendingProjects = allProjects?.filter(p => !p.isCompleted && !p.isApproved)
     const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved)
     const completedProjects = allProjects?.filter(p => p.isCompleted)

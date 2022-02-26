@@ -1,5 +1,5 @@
-import { Timestamp } from "firebase/firestore"
 import { useState, useEffect } from "react"
+import { db } from "../firebase/config";
 
 import { storage } from "../firebase/config"
 
@@ -10,10 +10,12 @@ import { UseCollection } from '../hooks/useCollection'
 import Select from "react-select"
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 
+import { collection, setDoc, doc, Timestamp, serverTimestamp } from "firebase/firestore";
+
 function CreateProjectModal(props) {
 
     const { user } = UseAuthContext()
-    const { addDocument, response } = UseFirestore('requests')
+    const { addDocument } = UseFirestore('notifications')
     const { documents } = UseCollection('project-category')
     const [cat, setCat] = useState([])
 
@@ -78,15 +80,32 @@ function CreateProjectModal(props) {
                             comments: [],
                             tasks: [],
                             createdBy: createdBy,
-                            isApproved: false
+                            isApproved: false,
+                            createdAt: serverTimestamp()
                         }
 
-                        await addDocument(project)
-                        if (!response.error) {
-                            props.cModal()
+                        const newRequestRef = doc(collection(db, "requests"));
+                        try {
+                            await setDoc(newRequestRef, project);
 
-                        } else {
-                            console.log(response.error)
+                            props.cModal()
+                        } catch (err) {
+                            console.log(err.message)
+                        }
+
+                        const notificationRef = doc(collection(db, "notifications"));
+                        try {
+                            await setDoc(notificationRef, {
+                                content: 'A new project has been requested',
+                                id: notificationRef.id,
+                                is_read: false,
+                                relative_link: `/requests/${newRequestRef.id}`,
+                                role_target: ['acm']
+                            });
+
+                            props.cModal()
+                        } catch (err) {
+                            console.log(err.message)
                         }
 
                         setIsPending(false)

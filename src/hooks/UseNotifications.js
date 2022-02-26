@@ -20,6 +20,7 @@ export const UseNotifications = () => {
     };
 
     const [notifications, setNotifications] = useState(null)
+    const [newNotifications, setNewNotifications] = useState(false)
     const [error, setError] = useState(null)
     const [user_notifications, setUserNotifications] = useState(null)
     const [role_notifications, setRoleNotifications] = useState(null)
@@ -38,6 +39,8 @@ export const UseNotifications = () => {
             setUserNotifications(results)
 
             setNotifications(user_notifications?.concat(role_notifications).unique())
+
+            setNewNotifications(notifications?.filter(n => n?.is_read === false).length > 0)
         }, (err) => {
             console.log(err.message)
             setError(err)
@@ -52,6 +55,8 @@ export const UseNotifications = () => {
             setRoleNotifications(results)
 
             setNotifications(user_notifications?.concat(role_notifications).unique())
+
+            setNewNotifications(notifications?.filter(n => n?.is_read === false).length > 0)
         }, (err) => {
             console.log(err.message)
             setError(err)
@@ -61,9 +66,9 @@ export const UseNotifications = () => {
             user_query_unsubscribe()
             role_query_unsubscribe()
         };
-    }, [notifications]);
+    }, [notifications, role_notifications, user.uid, user_notifications]);
 
 
 
-    return { notifications, error }
+    return { notifications, newNotifications, error }
 }
