@@ -20,18 +20,7 @@ function Dashboard() {
                         Dashboard
                     </span>
                 </div>
-                <div className="flex items-center justify-center">
-                    <div className="flex bg-primaryGreen bg-opacity-10 rounded-xl ">
-                        <input type="text" className="bg-gray-100 rounded-l-xl bg-opacity-20 px-4 py-2 w-[900px] h-11" placeholder="Search for projects..." />
-                        <button className="flex items-center justify-center px-4">
-                            <svg className="w-6 h-6 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                
             </div>
             <div className='flex w-full h-[790px] flex-row mt-10'>
                 <div className='border shadow-xl bg-opacity-10 w-2/3 py-9 px-7 rounded-tl-3xl'>

@@ -7,7 +7,8 @@ import { getDoc, setDoc, doc, updateDoc } from '@firebase/firestore';
 
 export const UseSignup = () => {
 
-    const [isCancelled, setIsCancelled] = useState(false)
+    const [isCancelled, setIsCancelled] = useState(false
+        )
     const [error, setError] = useState(null)
     const [isPending, setIsPending] = useState(false)
     const { dispatch } = UseAuthContext()
