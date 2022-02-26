@@ -17,13 +17,13 @@ export default function NavBar() {
             // initial={{ x: '-100vw' }}
             // animate={{ x: 0 }}
             // transition={{ type: 'spring', stiffness: 80}}
-            className="antialiased relative overflow-hidden">
+            className="antialiased relative overflow-hidden w-full">
             <div className="absolute top-[700px] -left-32 blur-lg">
                 < AnimatedBlurBlobs />
             </div>
-            <div className="flex flex-col w-[350px] h-screen bg-gred bg-opacity-[0.04] backdrop-blur-xl justify-between">
+            <div className="flex flex-col h-screen bg-gred bg-opacity-[0.04] backdrop-blur-xl justify-between">
 
-                <nav className="flex flex-col mt-24 ml-24 space-y-10">
+                <nav className="flex flex-col mt-24 mx-auto space-y-10">
                     <div className="pb-10">
                         <img src="/Header_Logo.png" alt="" />
                     </div>
@@ -40,7 +40,7 @@ export default function NavBar() {
                     <motion.div
                         whileHover={{ scale: 1.1, originX: 0 }}
                         className="w-full text-primaryGreen text-lg">
-                        <NavLink className="flex flex-row space-x-2 items-center" exact to="/projects/:id">
+                        <NavLink className="flex flex-row space-x-2 items-center" exact to="/projects">
                             <div className="w-6 h-6">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><title>Briefcase</title><rect x="32" y="128" width="448" height="320" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" /><path d="M144 128V96a32 32 0 0132-32h160a32 32 0 0132 32v32M480 240H32M320 240v24a8 8 0 01-8 8H200a8 8 0 01-8-8v-24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /></svg>
                             </div>
