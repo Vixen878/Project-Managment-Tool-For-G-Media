@@ -10,14 +10,14 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Tabs() {
+export default function Tabs({ searchTerm }) {
 
     const { user } = UseAuthContext()
 
     const allProjects = UseCollection(
         'requests',
         ["uid", "==", user.uid]
-    ).documents
+    ).documents?.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.description.toLowerCase().includes(searchTerm.toLowerCase()))
 
     const pendingProjects = allProjects?.filter(p => !p.isCompleted && !p.isApproved)
     const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved)
