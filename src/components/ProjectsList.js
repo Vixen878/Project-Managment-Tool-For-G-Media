@@ -12,7 +12,7 @@ export default function ProjectsList({ projects }) {
                 <div className="grid grid-cols-3 px-6 gap-6">
                     {projects.map(project => (
                         <Link to={!project.isCompleted && !project.isApproved ? `/requests/${project.id}` : `/project/${project.id}`} key={project.id}>
-                            <div onClick={null} className='w-72 h-72 shadow-xl flex flex-col justify-center rounded-3xl items-center space-x-2'>
+                            <div onClick={null} className={`w-72 h-72 shadow-xl flex flex-col justify-center rounded-3xl items-center space-x-2 ${project.isCancelled ? "bg-red-400" : ""}`}>
                                 <h4>{project.name}</h4>
                                 <p>Due by: {project.dueDate.toDate().toDateString()}</p>
                                 <span>By: {project.createdBy.displayName}</span>

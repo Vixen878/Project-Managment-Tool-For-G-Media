@@ -20,7 +20,7 @@ export default function Tabs({ searchTerm }) {
     ).documents?.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.description.toLowerCase().includes(searchTerm.toLowerCase()))
 
     const pendingProjects = allProjects?.filter(p => !p.isCompleted && !p.isApproved)
-    const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved)
+    const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved).filter(p => !p.isCancelled)
     const completedProjects = allProjects?.filter(p => p.isCompleted)
 
     let [isOpen, setIsOpen] = useState(false)
