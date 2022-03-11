@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tabs from '../components/dashBoardTabs'
 import { motion } from 'framer-motion'
 import { Link } from "react-router-dom";
@@ -8,6 +8,8 @@ import { UseNotifications } from "../hooks/UseNotifications";
 function Dashboard() {
 
     const { newNotifications } = UseNotifications();
+
+    const [searchTerm, setSearchTerm] = useState("");
 
     return (
         <motion.div
@@ -26,8 +28,10 @@ function Dashboard() {
                     </span>
                 </div>
                 <div className="flex items-center justify-center">
-                    <div className="flex bg-primaryGreen bg-opacity-10 rounded-xl ">
-                        <input type="text" className="bg-gray-100 rounded-l-xl bg-opacity-20 px-4 py-2 w-full h-11" placeholder="Search for projects..." />
+                    <form className="flex bg-primaryGreen bg-opacity-10 rounded-xl">
+                        <input type="text" className="bg-gray-100 rounded-l-xl bg-opacity-20 px-4 py-2 w-full h-11"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Search for projects..." />
                         <button className="flex items-center justify-center px-4">
                             <svg className="w-6 h-6 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24">
@@ -35,7 +39,7 @@ function Dashboard() {
                                     d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
                 <div className='flex flex-row-reverse items-center pr-6'>
                     <Link to={`notifications`}>
@@ -48,14 +52,23 @@ function Dashboard() {
                     </Link>
                 </div>
             </div>
-            <div className='flex w-full h-[790px] flex-row mt-10'>
-                <div className='border shadow-xl bg-opacity-10 w-2/3 py-9 px-7 rounded-tl-3xl'>
-                    <Tabs />
-                </div>
-                <div className='flex w-1/3'>
-                    <div className='border shadow-xl bg-opacity-10 w-full py-9 px-7 rounded-tr-3xl mr-10'>
-                        <span className='text-4xl'>Chats</span>
-                        <DashboardChatList className="my-5" />
+
+            <div className='flex flex-col w-full h-[790px] mt-10'>
+                {searchTerm &&
+                    <div className='m-2 text-lg'>
+                        <span>Search results for: </span>
+                        <span className='font-bold'>{searchTerm}</span>
+                    </div>
+                }
+                <div className='flex w-full'>
+                    <div className='border shadow-xl bg-opacity-10 w-2/3 py-9 px-7 rounded-tl-3xl'>
+                        <Tabs searchTerm={searchTerm} />
+                    </div>
+                    <div className='flex w-1/3'>
+                        <div className='border shadow-xl bg-opacity-10 w-full py-9 px-7 rounded-tr-3xl mr-10'>
+                            <span className='text-4xl'>Chats</span>
+                            <DashboardChatList className="my-5" />
+                        </div>
                     </div>
                 </div>
             </div>

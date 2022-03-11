@@ -1,7 +1,5 @@
-import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom"
-import { db } from '../firebase/config';
 
 import { UseAuthContext } from '../hooks/useAuthContext';
 import { UseCollection } from '../hooks/useCollection';
@@ -16,22 +14,7 @@ const DashboardChatList = () => {
 
     chats?.forEach(chat => {
         chat.project = projects.filter(p => p.id == chat.projectId)[0]
-
-        // const msgsRef = collection(db, 'messages', chat.projectId, 'chat')
-        // const q = query(msgsRef, orderBy('createdAt', 'asc', limit(1)))
-
-        // onSnapshot(q, querySnapshot => {
-        //     let msgs = []
-        //     querySnapshot.forEach(d => {
-        //         msgs.push(d.data())
-        //     })
-        //     setMessages(msgs)
-        // })
-
-        // console.log(chat)
     });
-
-    // console.log(messages)
 
     return (
         <div>
