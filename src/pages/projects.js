@@ -2,14 +2,17 @@ import { Link } from "react-router-dom"
 import { UseCollection } from "../hooks/useCollection"
 
 import { UseAuthContext } from '../hooks/useAuthContext';
+import { useState } from "react";
 
 
 export default function Projects() {
 
+    const [searchTerm, setSearchTerm] = useState("");
+
     const { user } = UseAuthContext()
 
-    const { documents } = UseCollection('requests',
-        ['uid', '==', user.uid])
+    const documents = UseCollection('requests',
+        ['uid', '==', user.uid]).documents?.filter(p => p.name.includes(searchTerm) || p.description.includes(searchTerm))
 
     return (
         <div className="w-full flex flex-col px-9 py-4 antialiased overflow-hidden">
@@ -20,6 +23,21 @@ export default function Projects() {
                 <span className='text-4xl font-bold'>
                     My Projects
                 </span>
+
+                <div className="flex-1"></div>
+
+                <form className="flex bg-primaryGreen bg-opacity-10 rounded-xl">
+                        <input type="text" className="bg-gray-100 rounded-l-xl bg-opacity-20 px-4 py-2 w-full h-11"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Search for projects..." />
+                        <button className="flex items-center justify-center px-4">
+                            <svg className="w-6 h-6 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                            </svg>
+                        </button>
+                    </form>
             </div>
 
             <div className="space-y-6 mt-8">
