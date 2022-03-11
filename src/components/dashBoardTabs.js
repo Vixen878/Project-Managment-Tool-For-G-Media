@@ -17,7 +17,7 @@ export default function Tabs({ searchTerm }) {
     const allProjects = UseCollection(
         'requests',
         ["uid", "==", user.uid]
-    ).documents?.filter(p => p.name.includes(searchTerm) || p.description.includes(searchTerm))
+    ).documents?.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.description.toLowerCase().includes(searchTerm.toLowerCase()))
 
     const pendingProjects = allProjects?.filter(p => !p.isCompleted && !p.isApproved)
     const ongoingProjects = allProjects?.filter(p => !p.isCompleted && p.isApproved)
